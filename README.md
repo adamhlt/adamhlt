@@ -2,7 +2,7 @@
 
 ### Hi there, I am Adam Henault :wave:
 
-My name is Adam Henault, I'm a french cybersecurity student. :mortar_board:
+I'm a french cybersecurity student. :mortar_board:
 
 My favorites activities are :
 
