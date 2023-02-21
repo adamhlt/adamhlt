@@ -1,4 +1,4 @@
-![Github Banner](https://user-images.githubusercontent.com/48086737/220384524-42a036da-8dd3-4a9a-bf79-026b867e85f7.png)
+![Github Banner-2](https://user-images.githubusercontent.com/48086737/220385124-f42a1a7a-644b-48e5-98c2-aa3982a70081.png)
 <p align="center">
     <img align="center" src="https://github-readme-stats.vercel.app/api?username=adamhlt&show_icons=true&theme=dracula&hide_border=true" />
     <br>
