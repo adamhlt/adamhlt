@@ -20,7 +20,7 @@
 # Github Statistics
 <br>
 <p align="center">
-    <img align="center" src="https://github-readme-stats.vercel.app/api?username=adamhlt&show_icons=true&theme=dracula&hide_border=true&include_all_commits=true" />
+    <img align="center" src="https://github-readme-stats.vercel.app/api?username=adamhlt&hide=makefile,tcl&show_icons=true&theme=dracula&hide_border=true&include_all_commits=true" />
     <br>
     <br>
     <br>
