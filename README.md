@@ -7,5 +7,5 @@ My name is Adam and I’m a French PhD student, in Hardware Cybersecurity. I hav
 </p>
 --->
 <p align="center">
-    <a href="https://github.com/adamhlt"><img align="center" src="https://metrics.lecoq.io/adamhlt?template=classic&base=header%2C%20activity%2C%20community%2C%20repositories%2C%20metadata&base.indepth=false&base.hireable=false&base.skip=false&config.timezone=Europe%2FParis" /></a>
+    <a href="https://github.com/adamhlt"><img align="center" src="github-metrics.svg" /></a>
 </p>
