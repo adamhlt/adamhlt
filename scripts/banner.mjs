@@ -1,5 +1,6 @@
 // Generates banner.svg: a GitHub profile banner styled after adamhlt.com.
 // Zero dependencies (Node >= 18). Usage: GITHUB_TOKEN=... node scripts/banner.mjs [out.svg]
+// Also writes the portrait variant next to it (banner-mobile.svg).
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 
 const LOGIN = process.env.BANNER_LOGIN || "adamhlt";
@@ -25,7 +26,17 @@ const C = {
   muted: "#7f7f87", dot: "230,230,235", accent: "255,62,48",
 };
 
-const W = 1000, H = 524, PAD = 40;
+// Two layouts: desktop (landscape) and mobile (portrait), swapped by <picture> in the README
+const LAYOUTS = {
+  desktop: {
+    W: 1000, H: 524, PAD: 40, pillY: 32, head: { size: 58, y: [160, 220] }, tag: { size: 12.5, y: 262, step: 21 },
+    venuesY: 332, panel: { x: 600, y: 136, w: 360, h: 172 }, heat: { y: 388, weeks: 53, label: "LAST 12 MONTHS" },
+  },
+  mobile: {
+    W: 480, H: 680, PAD: 24, pillY: 24, head: { size: 46, y: [130, 178] }, tag: { size: 12, y: 222, step: 20 },
+    venuesY: 290, panel: { x: 24, y: 316, w: 432, h: 172 }, heat: { y: 536, weeks: 26, label: "LAST 6 MONTHS" },
+  },
+};
 
 // ---------- data ----------
 
@@ -151,43 +162,44 @@ const fmt = (n) => (n >= 10000 ? (n / 1000).toFixed(1).replace(/\.0$/, "") + "k"
 const SANS = `'Space Grotesk',system-ui,sans-serif`;
 const MONO = `'JetBrains Mono',ui-monospace,monospace`;
 
-function render(d, avatar) {
+function render(d, avatar, L) {
+  const { W, PAD, pillY } = L;
   const now = new Date();
   const out = [];
   const add = (s) => out.push(s);
 
   // Header pill
   add(`<g class="fade">
-    <rect x="${PAD}" y="32" width="160" height="48" rx="24" fill="${C.panel}" stroke="${C.line}"/>
-    <clipPath id="av"><circle cx="${PAD + 24}" cy="56" r="16"/></clipPath>
+    <rect x="${PAD}" y="${pillY}" width="160" height="48" rx="24" fill="${C.panel}" stroke="${C.line}"/>
+    <clipPath id="av"><circle cx="${PAD + 24}" cy="${pillY + 24}" r="16"/></clipPath>
     <filter id="mono"><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncR type="linear" slope="1.05" intercept="-0.025"/><feFuncG type="linear" slope="1.05" intercept="-0.025"/><feFuncB type="linear" slope="1.05" intercept="-0.025"/></feComponentTransfer></filter>
-    <circle cx="${PAD + 24}" cy="56" r="16" fill="#0f0f12"/>
-    ${avatar ? `<g clip-path="url(#av)"><image href="${avatar}" x="${PAD + 8}" y="40" width="32" height="32" preserveAspectRatio="xMidYMid slice" filter="url(#mono)"/></g>` : ""}
-    <text x="${PAD + 50}" y="61" font-family="${SANS}" font-size="14" font-weight="500" fill="${C.text}">${esc(PROFILE.name)}</text>
+    <circle cx="${PAD + 24}" cy="${pillY + 24}" r="16" fill="#0f0f12"/>
+    ${avatar ? `<g clip-path="url(#av)"><image href="${avatar}" x="${PAD + 8}" y="${pillY + 8}" width="32" height="32" preserveAspectRatio="xMidYMid slice" filter="url(#mono)"/></g>` : ""}
+    <text x="${PAD + 50}" y="${pillY + 29}" font-family="${SANS}" font-size="14" font-weight="500" fill="${C.text}">${esc(PROFILE.name)}</text>
   </g>`);
-  add(`<text x="${W - PAD}" y="61" text-anchor="end" font-family="${MONO}" font-size="12" fill="${C.muted}">${esc(PROFILE.site)} <tspan fill="rgb(${C.accent})">${esc("↗")}</tspan></text>`);
+  add(`<text x="${W - PAD}" y="${pillY + 29}" text-anchor="end" font-family="${MONO}" font-size="12" fill="${C.muted}">${esc(PROFILE.site)} <tspan fill="rgb(${C.accent})">${esc("↗")}</tspan></text>`);
 
   // Headline
-  add(`<text class="fade d1" font-family="${SANS}" font-size="58" letter-spacing="-1.5" fill="${C.text}">
-    <tspan x="${PAD}" y="160">${esc(PROFILE.headline[0])}</tspan>
-    <tspan x="${PAD}" y="220">${esc(PROFILE.headline[1])}<tspan class="blink" fill="rgb(${C.accent})">${esc("_")}</tspan></tspan>
+  add(`<text class="fade d1" font-family="${SANS}" font-size="${L.head.size}" letter-spacing="${-L.head.size / 38}" fill="${C.text}">
+    <tspan x="${PAD}" y="${L.head.y[0]}">${esc(PROFILE.headline[0])}</tspan>
+    <tspan x="${PAD}" y="${L.head.y[1]}">${esc(PROFILE.headline[1])}<tspan class="blink" fill="rgb(${C.accent})">${esc("_")}</tspan></tspan>
   </text>`);
 
   // Tagline
   const lines = PROFILE.tagline.map((parts, i) =>
-    `<tspan x="${PAD}" y="${262 + i * 21}">` +
+    `<tspan x="${PAD}" y="${L.tag.y + i * L.tag.step}">` +
     parts.map(([s, strong]) => `<tspan${strong ? ` fill="${C.text}" font-weight="500"` : ""}>${esc(s)}</tspan>`).join("") +
     `</tspan>`);
-  add(`<text class="fade d2" font-family="${MONO}" font-size="12.5" fill="${C.muted}" xml:space="preserve">${lines.join("")}</text>`);
+  add(`<text class="fade d2" font-family="${MONO}" font-size="${L.tag.size}" fill="${C.muted}" xml:space="preserve">${lines.join("")}</text>`);
 
   // Venues
   add(`<g class="fade d3" font-family="${MONO}">
-    <text x="${PAD}" y="332" font-size="9.5" fill="${C.muted}">${esc("PUBLISHED & PRESENTED AT")}</text>
-    <text x="${PAD + 152}" y="332" font-size="11" font-weight="500" fill="${C.text}">${esc(PROFILE.venues.join("  ·  "))}</text>
+    <text x="${PAD}" y="${L.venuesY}" font-size="9.5" fill="${C.muted}">${esc("PUBLISHED & PRESENTED AT")}</text>
+    <text x="${PAD + 152}" y="${L.venuesY}" font-size="11" font-weight="500" fill="${C.text}">${esc(PROFILE.venues.join("  ·  "))}</text>
   </g>`);
 
   // Stats panel
-  const px = 600, py = 136, pw = W - PAD - px, ph = 172;
+  const { x: px, y: py, w: pw, h: ph } = L.panel;
   add(`<g class="fade d2">
     <rect x="${px}" y="${py}" width="${pw}" height="${ph}" rx="14" fill="${C.panel}" fill-opacity="0.82" stroke="${C.line}"/>`);
   const stats = [
@@ -203,11 +215,11 @@ function render(d, avatar) {
   });
   add(`</g>`);
 
-  // Contribution heatmap (last 53 weeks)
-  const weeks = d.weeks.slice(-53);
-  const hy = 388, step = (W - 2 * PAD + 4) / 53, cell = step - 4;
+  // Contribution heatmap
+  const weeks = d.weeks.slice(-L.heat.weeks);
+  const hy = L.heat.y, step = (W - 2 * PAD + 4) / L.heat.weeks, cell = step - 4;
   add(`<g font-family="${MONO}" font-size="9.5" fill="${C.muted}">
-    <text x="${PAD}" y="${hy - 16}">${esc("ACTIVITY · LAST 12 MONTHS")}</text>
+    <text x="${PAD}" y="${hy - 16}">${esc("ACTIVITY · " + L.heat.label)}</text>
     <text x="${W - PAD}" y="${hy - 16}" text-anchor="end">${esc("UPDATED " + now.toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric", timeZone: "UTC" }).toUpperCase())}</text>
   </g>`);
   const opac = [0.05, 0.22, 0.42, 0.66, 0.94];
@@ -228,10 +240,10 @@ const data = await (TOKEN ? fromGraphQL() : fromPublic());
 const avatar = await siteAvatar()
   .catch((e) => (console.warn("site avatar:", e.message), dataUri(data.avatarUrl)))
   .catch(() => "");
-const body = render(data, avatar);
+const bodies = Object.fromEntries(Object.entries(LAYOUTS).map(([k, L]) => [k, render(data, avatar, L)]));
 const fonts = await embedFonts(used.join("") + "0123456789,.k").catch((e) => (console.warn("fonts:", e.message), ""));
 
-const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="${PROFILE.name}: ${PROFILE.headline.join(" ")}">
+const doc = ({ W, H }, body) => `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="${PROFILE.name}: ${PROFILE.headline.join(" ")}">
 <title>${PROFILE.name} · ${PROFILE.site}</title>
 <style>${fonts}
 .fade{animation:fade .8s ease-out both}.d1{animation-delay:.1s}.d2{animation-delay:.25s}.d3{animation-delay:.4s}
@@ -258,5 +270,9 @@ ${body}
 </svg>
 `;
 
-await writeFile(OUT, svg);
-console.log(`wrote ${OUT} (${(svg.length / 1024).toFixed(1)} KB) via ${TOKEN ? "GraphQL" : "public API"}`);
+for (const [k, L] of Object.entries(LAYOUTS)) {
+  const file = k === "desktop" ? OUT : OUT.replace(/.svg$/, `-${k}.svg`);
+  const svg = doc(L, bodies[k]);
+  await writeFile(file, svg);
+  console.log(`wrote ${file} (${(svg.length / 1024).toFixed(1)} KB) via ${TOKEN ? "GraphQL" : "public API"}`);
+}
