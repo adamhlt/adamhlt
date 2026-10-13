@@ -7,7 +7,7 @@ on:
   # Regenerate when the generator changes
   push:
     branches: ["main"]
-    paths: ["scripts/banner.mjs", ".github/workflows/banner.yml"]
+    paths: ["scripts/banner.mjs", ".github/workflows/banner.yml", "assets/avatar.webp"]
 jobs:
   banner:
     runs-on: ubuntu-latest
@@ -26,7 +26,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add banner.svg
+          git add banner.svg assets/avatar.webp
           git diff --cached --quiet || git commit -m "Update banner.svg - [Skip GitHub Action]"
           git pull --rebase
           git push

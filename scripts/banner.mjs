@@ -1,6 +1,6 @@
 // Generates banner.svg: a GitHub profile banner styled after adamhlt.com.
 // Zero dependencies (Node >= 18). Usage: GITHUB_TOKEN=... node scripts/banner.mjs [out.svg]
-import { writeFile } from "node:fs/promises";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
 
 const LOGIN = process.env.BANNER_LOGIN || "adamhlt";
 const TOKEN = process.env.GITHUB_TOKEN || "";
@@ -98,13 +98,30 @@ async function dataUri(url) {
   return `data:${type};base64,${Buffer.from(await res.arrayBuffer()).toString("base64")}`;
 }
 
-// Cropped portrait from adamhlt.com (hashed asset name, so read it from the page)
-async function siteAvatar() {
+// Cropped portrait from adamhlt.com, downloaded into the repo (assets/avatar.webp).
+// The site sits behind Cloudflare, which may block CI runners: in that case the
+// last downloaded copy is used.
+const AVATAR_FILE = "assets/avatar.webp";
+const BROWSER = {
+  "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124 Safari/537.36",
+  Accept: "text/html,image/avif,image/webp,*/*",
+};
+
+async function downloadSiteAvatar() {
   const base = `https://${PROFILE.site}/`;
-  const html = await (await fetch(base)).text();
-  const src = html.match(/<img[^>]+src="([^"]*avatar[^"]*)"/i)?.[1];
+  const page = await fetch(base, { headers: BROWSER });
+  if (!page.ok) throw new Error(`${page.status} ${base}`);
+  const src = (await page.text()).match(/<img[^>]+src="([^"]*avatar[^"]*)"/i)?.[1];
   if (!src) throw new Error("avatar not found on site");
-  return dataUri(new URL(src, base).href);
+  const img = await fetch(new URL(src, base), { headers: BROWSER });
+  if (!img.ok || !img.headers.get("content-type")?.startsWith("image/")) throw new Error(`${img.status} ${src}`);
+  await mkdir("assets", { recursive: true });
+  await writeFile(AVATAR_FILE, Buffer.from(await img.arrayBuffer()));
+}
+
+async function siteAvatar() {
+  await downloadSiteAvatar().catch((e) => console.warn(`site avatar download failed (${e.message}), using ${AVATAR_FILE}`));
+  return `data:image/webp;base64,${(await readFile(AVATAR_FILE)).toString("base64")}`;
 }
 
 // Google Fonts subset (only the glyphs used), inlined so it renders inside <img>
