@@ -29,12 +29,16 @@ const C = {
 // Two layouts: desktop (landscape) and mobile (portrait), swapped by <picture> in the README
 const LAYOUTS = {
   desktop: {
-    W: 1000, H: 524, PAD: 40, pillY: 32, head: { size: 58, y: [160, 220] }, tag: { size: 12.5, y: 262, step: 21 },
-    venuesY: 332, panel: { x: 600, y: 136, w: 360, h: 172 }, heat: { y: 388, weeks: 53, label: "LAST 12 MONTHS" },
+    W: 1000, H: 596, PAD: 40, pillY: 32, pillH: 54, head: { size: 62, y: [172, 238] }, tag: { size: 14.5, y: 286, step: 25 },
+    venuesY: 380, panel: { x: 612, y: 128, w: 348, h: 236 }, stat: { top: 50, gap: 44, row: 100 },
+    heat: { y: 440, weeks: 53, label: "LAST 12 MONTHS" },
+    fs: { name: 16.5, site: 14, label: 12, venues: 13.5, value: 40 },
   },
   mobile: {
-    W: 480, H: 680, PAD: 24, pillY: 24, head: { size: 46, y: [130, 178] }, tag: { size: 12, y: 222, step: 20 },
-    venuesY: 290, panel: { x: 24, y: 316, w: 432, h: 172 }, heat: { y: 536, weeks: 26, label: "LAST 6 MONTHS" },
+    W: 480, H: 680, PAD: 24, pillY: 24, pillH: 48, head: { size: 46, y: [130, 178] }, tag: { size: 12, y: 222, step: 20 },
+    venuesY: 290, panel: { x: 24, y: 316, w: 432, h: 172 }, stat: { top: 36, gap: 36, row: 74 },
+    heat: { y: 536, weeks: 26, label: "LAST 6 MONTHS" },
+    fs: { name: 14, site: 12, label: 9.5, venues: 11, value: 32 },
   },
 };
 
@@ -163,21 +167,23 @@ const SANS = `'Space Grotesk',system-ui,sans-serif`;
 const MONO = `'JetBrains Mono',ui-monospace,monospace`;
 
 function render(d, avatar, L) {
-  const { W, PAD, pillY } = L;
+  const { W, PAD, pillY, pillH, fs } = L;
+  const r = pillH / 2 - 8, cx = PAD + pillH / 2, cy = pillY + pillH / 2;
+  const textY = (size) => cy + size * 0.36;
   const now = new Date();
   const out = [];
   const add = (s) => out.push(s);
 
   // Header pill
   add(`<g class="fade">
-    <rect x="${PAD}" y="${pillY}" width="160" height="48" rx="24" fill="${C.panel}" stroke="${C.line}"/>
-    <clipPath id="av"><circle cx="${PAD + 24}" cy="${pillY + 24}" r="16"/></clipPath>
+    <rect x="${PAD}" y="${pillY}" width="${(pillH + fs.name * 7.2 + 14).toFixed(0)}" height="${pillH}" rx="${pillH / 2}" fill="${C.panel}" stroke="${C.line}"/>
+    <clipPath id="av"><circle cx="${cx}" cy="${cy}" r="${r}"/></clipPath>
     <filter id="mono"><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncR type="linear" slope="1.05" intercept="-0.025"/><feFuncG type="linear" slope="1.05" intercept="-0.025"/><feFuncB type="linear" slope="1.05" intercept="-0.025"/></feComponentTransfer></filter>
-    <circle cx="${PAD + 24}" cy="${pillY + 24}" r="16" fill="#0f0f12"/>
-    ${avatar ? `<g clip-path="url(#av)"><image href="${avatar}" x="${PAD + 8}" y="${pillY + 8}" width="32" height="32" preserveAspectRatio="xMidYMid slice" filter="url(#mono)"/></g>` : ""}
-    <text x="${PAD + 50}" y="${pillY + 29}" font-family="${SANS}" font-size="14" font-weight="500" fill="${C.text}">${esc(PROFILE.name)}</text>
+    <circle cx="${cx}" cy="${cy}" r="${r}" fill="#0f0f12"/>
+    ${avatar ? `<g clip-path="url(#av)"><image href="${avatar}" x="${cx - r}" y="${cy - r}" width="${2 * r}" height="${2 * r}" preserveAspectRatio="xMidYMid slice" filter="url(#mono)"/></g>` : ""}
+    <text x="${PAD + pillH + 2}" y="${textY(fs.name)}" font-family="${SANS}" font-size="${fs.name}" font-weight="500" fill="${C.text}">${esc(PROFILE.name)}</text>
   </g>`);
-  add(`<text x="${W - PAD}" y="${pillY + 29}" text-anchor="end" font-family="${MONO}" font-size="12" fill="${C.muted}">${esc(PROFILE.site)} <tspan fill="rgb(${C.accent})">${esc("↗")}</tspan></text>`);
+  add(`<text x="${W - PAD}" y="${textY(fs.site)}" text-anchor="end" font-family="${MONO}" font-size="${fs.site}" fill="${C.muted}">${esc(PROFILE.site)} <tspan fill="rgb(${C.accent})">${esc("↗")}</tspan></text>`);
 
   // Headline
   add(`<text class="fade d1" font-family="${SANS}" font-size="${L.head.size}" letter-spacing="${-L.head.size / 38}" fill="${C.text}">
@@ -194,8 +200,8 @@ function render(d, avatar, L) {
 
   // Venues
   add(`<g class="fade d3" font-family="${MONO}">
-    <text x="${PAD}" y="${L.venuesY}" font-size="9.5" fill="${C.muted}">${esc("PUBLISHED & PRESENTED AT")}</text>
-    <text x="${PAD + 152}" y="${L.venuesY}" font-size="11" font-weight="500" fill="${C.text}">${esc(PROFILE.venues.join("  ·  "))}</text>
+    <text x="${PAD}" y="${L.venuesY}" font-size="${fs.label}" fill="${C.muted}">${esc("PUBLISHED & PRESENTED AT")}</text>
+    <text x="${PAD + fs.label * 0.6 * 24 + 14}" y="${L.venuesY}" font-size="${fs.venues}" font-weight="500" fill="${C.text}">${esc(PROFILE.venues.join("  ·  "))}</text>
   </g>`);
 
   // Stats panel
@@ -209,18 +215,18 @@ function render(d, avatar, L) {
     ["FOLLOWERS", fmt(d.followers)],
   ];
   stats.forEach(([label, value], i) => {
-    const x = px + 24 + (i % 2) * (pw / 2), y = py + 36 + Math.floor(i / 2) * 74;
-    add(`<text x="${x}" y="${y}" font-family="${MONO}" font-size="9.5" fill="${C.muted}">${esc(label)}</text>
-    <text x="${x}" y="${y + 36}" font-family="${SANS}" font-size="32" letter-spacing="-0.8" fill="${C.text}">${esc(value)}</text>`);
+    const x = px + 24 + (i % 2) * (pw / 2), y = py + L.stat.top + Math.floor(i / 2) * L.stat.row;
+    add(`<text x="${x}" y="${y}" font-family="${MONO}" font-size="${fs.label}" fill="${C.muted}">${esc(label)}</text>
+    <text x="${x}" y="${y + L.stat.gap}" font-family="${SANS}" font-size="${fs.value}" letter-spacing="${-fs.value / 40}" fill="${C.text}">${esc(value)}</text>`);
   });
   add(`</g>`);
 
   // Contribution heatmap
   const weeks = d.weeks.slice(-L.heat.weeks);
   const hy = L.heat.y, step = (W - 2 * PAD + 4) / L.heat.weeks, cell = step - 4;
-  add(`<g font-family="${MONO}" font-size="9.5" fill="${C.muted}">
-    <text x="${PAD}" y="${hy - 16}">${esc("ACTIVITY · " + L.heat.label)}</text>
-    <text x="${W - PAD}" y="${hy - 16}" text-anchor="end">${esc("UPDATED " + now.toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric", timeZone: "UTC" }).toUpperCase())}</text>
+  add(`<g font-family="${MONO}" font-size="${fs.label}" fill="${C.muted}">
+    <text x="${PAD}" y="${hy - fs.label * 1.5}">${esc("ACTIVITY · " + L.heat.label)}</text>
+    <text x="${W - PAD}" y="${hy - fs.label * 1.5}" text-anchor="end">${esc("UPDATED " + now.toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric", timeZone: "UTC" }).toUpperCase())}</text>
   </g>`);
   const opac = [0.05, 0.22, 0.42, 0.66, 0.94];
   const lastDate = weeks.at(-1)?.at(-1)?.date;
