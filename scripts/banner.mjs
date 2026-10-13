@@ -29,16 +29,16 @@ const C = {
 // Two layouts: desktop (landscape) and mobile (portrait), swapped by <picture> in the README
 const LAYOUTS = {
   desktop: {
-    W: 1000, H: 596, PAD: 40, pillY: 32, pillH: 54, head: { size: 62, y: [172, 238] }, tag: { size: 14.5, y: 286, step: 25 },
-    venuesY: 380, panel: { x: 612, y: 128, w: 348, h: 236 }, stat: { top: 50, gap: 44, row: 100 },
-    heat: { y: 440, weeks: 53, label: "LAST 12 MONTHS" },
-    fs: { name: 16.5, site: 14, label: 12, venues: 13.5, value: 40 },
+    W: 1000, H: 624, PAD: 40, pillY: 32, pillH: 58, head: { size: 66, y: [182, 250] }, tag: { size: 16, y: 300, step: 27 },
+    venuesY: 400, panel: { x: 612, y: 130, w: 348, h: 250 }, stat: { top: 54, gap: 48, row: 108 },
+    heat: { y: 468, weeks: 53, label: "LAST 12 MONTHS" },
+    fs: { name: 18, site: 15, label: 13.5, venues: 15, value: 44 },
   },
   mobile: {
-    W: 480, H: 680, PAD: 24, pillY: 24, pillH: 48, head: { size: 46, y: [130, 178] }, tag: { size: 12, y: 222, step: 20 },
-    venuesY: 290, panel: { x: 24, y: 316, w: 432, h: 172 }, stat: { top: 36, gap: 36, row: 74 },
-    heat: { y: 536, weeks: 26, label: "LAST 6 MONTHS" },
-    fs: { name: 14, site: 12, label: 9.5, venues: 11, value: 32 },
+    W: 480, H: 770, PAD: 24, pillY: 24, pillH: 54, head: { size: 50, y: [146, 198] }, tag: { size: 13.5, y: 246, step: 23 },
+    venuesY: 330, panel: { x: 24, y: 358, w: 432, h: 210 }, stat: { top: 46, gap: 44, row: 92 },
+    heat: { y: 628, weeks: 26, label: "LAST 6 MONTHS" },
+    fs: { name: 16, site: 13.5, label: 11.5, venues: 13, value: 38 },
   },
 };
 
