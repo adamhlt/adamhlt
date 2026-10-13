@@ -22,7 +22,7 @@ const PROFILE = {
 // Design tokens from adamhlt.com :root
 const C = {
   bg: "#060607", panel: "#0a0a0c", line: "#1c1c21", text: "#ececec",
-  muted: "#7f7f87", dim: "#4a4a50", dot: "230,230,235", accent: "255,62,48",
+  muted: "#7f7f87", dot: "230,230,235", accent: "255,62,48",
 };
 
 const W = 1000, H = 524, PAD = 40;
@@ -165,8 +165,8 @@ function render(d, avatar) {
 
   // Venues
   add(`<g class="fade d3" font-family="${MONO}">
-    <text x="${PAD}" y="332" font-size="9.5" letter-spacing="1.8" fill="${C.dim}">${esc("PUBLISHED & PRESENTED AT")}</text>
-    <text x="${PAD + 196}" y="332" font-size="11" font-weight="500" letter-spacing="1.5" fill="${C.text}">${esc(PROFILE.venues.join("  ·  "))}</text>
+    <text x="${PAD}" y="332" font-size="9.5" fill="${C.muted}">${esc("PUBLISHED & PRESENTED AT")}</text>
+    <text x="${PAD + 152}" y="332" font-size="11" font-weight="500" fill="${C.text}">${esc(PROFILE.venues.join("  ·  "))}</text>
   </g>`);
 
   // Stats panel
@@ -181,7 +181,7 @@ function render(d, avatar) {
   ];
   stats.forEach(([label, value], i) => {
     const x = px + 24 + (i % 2) * (pw / 2), y = py + 36 + Math.floor(i / 2) * 74;
-    add(`<text x="${x}" y="${y}" font-family="${MONO}" font-size="9.5" letter-spacing="1.6" fill="${C.dim}">${esc(label)}</text>
+    add(`<text x="${x}" y="${y}" font-family="${MONO}" font-size="9.5" fill="${C.muted}">${esc(label)}</text>
     <text x="${x}" y="${y + 36}" font-family="${SANS}" font-size="32" letter-spacing="-0.8" fill="${C.text}">${esc(value)}</text>`);
   });
   add(`</g>`);
@@ -189,7 +189,7 @@ function render(d, avatar) {
   // Contribution heatmap (last 53 weeks)
   const weeks = d.weeks.slice(-53);
   const hy = 388, step = (W - 2 * PAD + 4) / 53, cell = step - 4;
-  add(`<g font-family="${MONO}" font-size="9.5" letter-spacing="1.6" fill="${C.dim}">
+  add(`<g font-family="${MONO}" font-size="9.5" fill="${C.muted}">
     <text x="${PAD}" y="${hy - 16}">${esc("ACTIVITY · LAST 12 MONTHS")}</text>
     <text x="${W - PAD}" y="${hy - 16}" text-anchor="end">${esc("UPDATED " + now.toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric", timeZone: "UTC" }).toUpperCase())}</text>
   </g>`);
