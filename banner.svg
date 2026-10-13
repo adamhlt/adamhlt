@@ -28,7 +28,7 @@
     <text x="90" y="61" font-family="'Space Grotesk',system-ui,sans-serif" font-size="14" font-weight="500" fill="#ececec">Adam Henault</text>
   </g>
 <text x="960" y="61" text-anchor="end" font-family="'JetBrains Mono',ui-monospace,monospace" font-size="12" fill="#7f7f87">adamhlt.com <tspan fill="rgb(255,62,48)">↗</tspan></text>
-<text class="fade d1" font-family="'Space Grotesk',system-ui,sans-serif" font-size="58" letter-spacing="-1.5" fill="#ececec">
+<text class="fade d1" font-family="'Space Grotesk',system-ui,sans-serif" font-size="58" letter-spacing="-1.5263157894736843" fill="#ececec">
     <tspan x="40" y="160">Secrets Leak</tspan>
     <tspan x="40" y="220">Through Silicon<tspan class="blink" fill="rgb(255,62,48)">_</tspan></tspan>
   </text>
@@ -40,7 +40,7 @@
 <g class="fade d2">
     <rect x="600" y="136" width="360" height="172" rx="14" fill="#0a0a0c" fill-opacity="0.82" stroke="#1c1c21"/>
 <text x="624" y="172" font-family="'JetBrains Mono',ui-monospace,monospace" font-size="9.5" fill="#7f7f87">CONTRIBUTIONS</text>
-    <text x="624" y="208" font-family="'Space Grotesk',system-ui,sans-serif" font-size="32" letter-spacing="-0.8" fill="#ececec">149</text>
+    <text x="624" y="208" font-family="'Space Grotesk',system-ui,sans-serif" font-size="32" letter-spacing="-0.8" fill="#ececec">151</text>
 <text x="804" y="172" font-family="'JetBrains Mono',ui-monospace,monospace" font-size="9.5" fill="#7f7f87">STARS EARNED</text>
     <text x="804" y="208" font-family="'Space Grotesk',system-ui,sans-serif" font-size="32" letter-spacing="-0.8" fill="#ececec">1,511</text>
 <text x="624" y="246" font-family="'JetBrains Mono',ui-monospace,monospace" font-size="9.5" fill="#7f7f87">REPOSITORIES</text>
