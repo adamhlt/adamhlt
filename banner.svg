@@ -40,7 +40,7 @@
 <g class="fade d2">
     <rect x="612" y="130" width="348" height="250" rx="14" fill="#0a0a0c" fill-opacity="0.82" stroke="#1c1c21"/>
 <text x="636" y="184" font-family="'JetBrains Mono',ui-monospace,monospace" font-size="13.5" fill="#7f7f87">CONTRIBUTIONS</text>
-    <text x="636" y="232" font-family="'Space Grotesk',system-ui,sans-serif" font-size="44" letter-spacing="-1.1" fill="#ececec">151</text>
+    <text x="636" y="232" font-family="'Space Grotesk',system-ui,sans-serif" font-size="44" letter-spacing="-1.1" fill="#ececec">148</text>
 <text x="810" y="184" font-family="'JetBrains Mono',ui-monospace,monospace" font-size="13.5" fill="#7f7f87">STARS EARNED</text>
     <text x="810" y="232" font-family="'Space Grotesk',system-ui,sans-serif" font-size="44" letter-spacing="-1.1" fill="#ececec">1,507</text>
 <text x="636" y="292" font-family="'JetBrains Mono',ui-monospace,monospace" font-size="13.5" fill="#7f7f87">REPOSITORIES</text>
@@ -50,7 +50,7 @@
 </g>
 <g font-family="'JetBrains Mono',ui-monospace,monospace" font-size="13.5" fill="#7f7f87">
     <text x="40" y="447.75">ACTIVITY · LAST 12 MONTHS</text>
-    <text x="960" y="447.75" text-anchor="end">UPDATED 18 OCT 2026</text>
+    <text x="960" y="447.75" text-anchor="end">UPDATED 19 OCT 2026</text>
   </g>
 <rect class="cell" style="animation-delay:0ms" x="40.0" y="468.0" width="13.4" height="13.4" rx="2.5" fill="rgba(230,230,235,0.05)"/>
 <rect class="cell" style="animation-delay:0ms" x="40.0" y="485.4" width="13.4" height="13.4" rx="2.5" fill="rgba(230,230,235,0.05)"/>
@@ -416,7 +416,8 @@
 <rect class="cell" style="animation-delay:918ms" x="929.1" y="537.7" width="13.4" height="13.4" rx="2.5" fill="rgba(230,230,235,0.05)"/>
 <rect class="cell" style="animation-delay:918ms" x="929.1" y="555.2" width="13.4" height="13.4" rx="2.5" fill="rgba(230,230,235,0.22)"/>
 <rect class="cell" style="animation-delay:918ms" x="929.1" y="572.6" width="13.4" height="13.4" rx="2.5" fill="rgba(230,230,235,0.05)"/>
-<rect class="cell" style="animation-delay:936ms" x="946.6" y="468.0" width="13.4" height="13.4" rx="2.5" fill="rgb(255,62,48)"/>
+<rect class="cell" style="animation-delay:936ms" x="946.6" y="468.0" width="13.4" height="13.4" rx="2.5" fill="rgba(230,230,235,0.05)"/>
+<rect class="cell" style="animation-delay:936ms" x="946.6" y="485.4" width="13.4" height="13.4" rx="2.5" fill="rgb(255,62,48)"/>
 </g>
 <rect x="0.5" y="0.5" width="999" height="623" rx="17.5" fill="none" stroke="#1c1c21"/>
 </svg>
